@@ -1,6 +1,6 @@
-import { __CAMELNAME__Tool } from "@/tools/__SLUG__";
+import { __camelName__Config } from "@/tools/__SLUG__/tool.config";
 import { ToolRunnerPage } from "@/components/tool-runner/ToolRunnerPage";
 
 export function __PASCALNAME__Page() {
-  return <ToolRunnerPage tool={__CAMELNAME__Tool} />;
+  return <ToolRunnerPage config={__camelName__Config} />;
 }

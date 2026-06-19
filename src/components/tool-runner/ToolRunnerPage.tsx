@@ -3,7 +3,7 @@
 import { FormEvent, useMemo, useState } from "react";
 import { useI18n } from "@/components/LocaleProvider";
 import { getDecodeProgressSteps } from "@/lib/decodeProgress";
-import type { RegisteredTool } from "@/tools/types";
+import type { ToolConfig } from "@/tools/types";
 import { DownloadResult } from "./DownloadResult";
 import { FileUploadBox } from "./FileUploadBox";
 import { FinalInstructions } from "./FinalInstructions";
@@ -12,13 +12,12 @@ import { ResponsibilityCheckbox } from "./ResponsibilityCheckbox";
 import { ToolInfoCard } from "./ToolInfoCard";
 
 interface ToolRunnerPageProps {
-  tool: RegisteredTool;
+  config: ToolConfig;
 }
 
-export function ToolRunnerPage({ tool }: ToolRunnerPageProps) {
+export function ToolRunnerPage({ config }: ToolRunnerPageProps) {
   const { t } = useI18n();
   const progressSteps = useMemo(() => getDecodeProgressSteps(t.progress), [t]);
-  const { config } = tool;
 
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [liabilityAccepted, setLiabilityAccepted] = useState(false);
