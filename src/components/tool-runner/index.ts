@@ -7,3 +7,4 @@ export { ToolAccessGuard } from "./ToolAccessGuard";
 export { ToolHeader } from "./ToolHeader";
 export { ToolInfoCard } from "./ToolInfoCard";
 export { ToolRunnerPage } from "./ToolRunnerPage";
+export type { ToolRunnerViewModel } from "@/tools/serializable";

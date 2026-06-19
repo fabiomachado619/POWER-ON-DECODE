@@ -98,9 +98,10 @@ async function main() {
   console.log("Próximos passos:");
   console.log(`1. Implementar validator/processor em src/tools/${args.slug}`);
   console.log("2. Registrar em src/tools/registry.ts");
-  console.log("3. npm run seed:tools");
-  console.log("4. npm run test:tools");
-  console.log("5. npm run build");
+  console.log("3. Na UI, usar getToolRunnerViewModel() — nunca passar RegisteredTool ao client");
+  console.log("4. npm run seed:tools");
+  console.log("5. npm run test:tools");
+  console.log("6. npm run validate:production");
 }
 
 main().catch((error) => {

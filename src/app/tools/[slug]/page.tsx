@@ -10,7 +10,7 @@ import { assertToolAccess } from "@/lib/toolEngine";
 import { getSessionUser } from "@/lib/auth";
 import { getUserToolsCatalog, isToolVisibleForCustomers } from "@/lib/tools";
 import { getServerTranslations } from "@/i18n/server";
-import { getRegisteredTool } from "@/tools/registry";
+import { getRegisteredTool, getToolRunnerViewModel } from "@/tools/registry";
 
 interface ToolPageParams {
   params: { slug: string };
@@ -21,17 +21,19 @@ export default async function DynamicToolPage({ params }: ToolPageParams) {
   if (!user) redirect("/login");
 
   const tool = getRegisteredTool(params.slug);
-  if (!tool || !tool.config.isImplemented) {
+  const runnerConfig = getToolRunnerViewModel(params.slug);
+  if (!tool || !runnerConfig || !tool.config.isImplemented) {
     redirect("/dashboard");
   }
 
   const visible = await isToolVisibleForCustomers(params.slug);
 
-  const [{ t }, catalog, access] = await Promise.all([
+  const [translations, catalog, access] = await Promise.all([
     getServerTranslations(),
     getUserToolsCatalog(user.id),
     assertToolAccess(user, tool),
   ]);
+  const { t } = translations;
 
   const catalogTool = catalog.allTools.find(
     (item) => item.slug === tool.config.slug
@@ -81,7 +83,7 @@ export default async function DynamicToolPage({ params }: ToolPageParams) {
           dashboardLabel={t.tool.backHome}
           buyLabel={t.card.buyAccess}
         >
-          <ToolRunnerPage config={tool.config} />
+          <ToolRunnerPage config={runnerConfig} />
         </ToolAccessGuard>
       </main>
     </div>

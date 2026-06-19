@@ -38,8 +38,11 @@ export interface ToolProcessResult {
 
 export interface RegisteredTool {
   config: ToolConfig;
+  /** Somente servidor/API — nunca passar para Client Components. */
   validate: (context: ToolProcessContext) => ToolValidationResult;
+  /** Somente servidor/API — nunca passar para Client Components. */
   process: (context: ToolProcessContext) => ToolProcessResult;
+  /** Somente servidor/testes — nunca passar para Client Components. */
   runTests?: () => void | Promise<void>;
 }
 

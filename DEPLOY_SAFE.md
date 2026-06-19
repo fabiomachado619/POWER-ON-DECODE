@@ -65,14 +65,34 @@ server {
 }
 ```
 
+## Antes de enviar para produção (GitHub/VPS)
+
+Sempre rode localmente:
+
+```bash
+npm run validate:production
+```
+
+Esse comando garante:
+
+- `package.json` e `package-lock.json` sincronizados (`npm ci` no Docker)
+- nenhum Client Component recebe `RegisteredTool` com funções
+- lint + build + testes de ferramentas
+
+### Regra de arquitetura das ferramentas
+
+- `validate`, `process` e `runTests` ficam **somente no servidor/API**
+- páginas e Client Components recebem apenas `ToolRunnerViewModel` (`config` serializável)
+- use `getToolRunnerViewModel(slug)` ao renderizar `ToolRunnerPage`
+- nunca `<ToolRunnerPage tool={registeredTool} />`
+
 ## Comandos recomendados para produção
 
 ```bash
 npm ci
 npx prisma migrate deploy
 npm run seed:production
-npm run test:tools
-npm run build
+npm run validate:production
 docker compose up -d --build app
 ```
 

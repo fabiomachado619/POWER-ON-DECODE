@@ -3,7 +3,7 @@
 import { FormEvent, useMemo, useState } from "react";
 import { useI18n } from "@/components/LocaleProvider";
 import { getDecodeProgressSteps } from "@/lib/decodeProgress";
-import type { ToolConfig } from "@/tools/types";
+import type { ToolRunnerViewModel } from "@/tools/serializable";
 import { DownloadResult } from "./DownloadResult";
 import { FileUploadBox } from "./FileUploadBox";
 import { FinalInstructions } from "./FinalInstructions";
@@ -12,7 +12,7 @@ import { ResponsibilityCheckbox } from "./ResponsibilityCheckbox";
 import { ToolInfoCard } from "./ToolInfoCard";
 
 interface ToolRunnerPageProps {
-  config: ToolConfig;
+  config: ToolRunnerViewModel;
 }
 
 export function ToolRunnerPage({ config }: ToolRunnerPageProps) {

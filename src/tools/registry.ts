@@ -1,5 +1,11 @@
 import { ssangyongRexton25c320DecodeTool } from "@/tools/ssangyong-rexton-25c320-decode";
 import type { RegisteredTool } from "@/tools/types";
+import type { ToolConfig } from "@/tools/types";
+import {
+  assertToolRunnerViewModel,
+  toToolRunnerViewModel,
+  type ToolRunnerViewModel,
+} from "@/tools/serializable";
 
 export const toolRegistry: RegisteredTool[] = [
   ssangyongRexton25c320DecodeTool,
@@ -7,6 +13,23 @@ export const toolRegistry: RegisteredTool[] = [
 
 export function getRegisteredTool(slug: string): RegisteredTool | undefined {
   return toolRegistry.find((tool) => tool.config.slug === slug);
+}
+
+/**
+ * Metadados seguros para Client Components (sem funções do registry).
+ */
+export function getToolRunnerViewModel(
+  slug: string
+): ToolRunnerViewModel | undefined {
+  const tool = getRegisteredTool(slug);
+  if (!tool) return undefined;
+  return assertToolRunnerViewModel(toToolRunnerViewModel(tool.config));
+}
+
+export function getToolRunnerViewModelFromConfig(
+  config: ToolConfig
+): ToolRunnerViewModel {
+  return assertToolRunnerViewModel(toToolRunnerViewModel(config));
 }
 
 export function isToolRegistered(slug: string): boolean {
