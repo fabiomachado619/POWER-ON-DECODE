@@ -23,12 +23,15 @@ services:
       dockerfile: Dockerfile
     container_name: podt-app
     restart: unless-stopped
+    env_file:
+      - .env
     depends_on:
       db:
         condition: service_healthy
     environment:
       NODE_ENV: production
-      APP_URL: http://localhost:3000
+      APP_URL: ${APP_URL:-http://localhost:3000}
+      WEBHOOK_PUBLIC_BASE_URL: ${WEBHOOK_PUBLIC_BASE_URL:-}
       DATABASE_URL: postgresql://postgres:postgres@db:5432/power_on_decode?schema=public
       JWT_SECRET: ${JWT_SECRET:-change-this-to-a-long-random-secret-in-production}
       SESSION_COOKIE_NAME: podt_session

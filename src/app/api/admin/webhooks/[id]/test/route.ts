@@ -4,7 +4,9 @@ import { requireAdminUser } from "@/lib/adminAuth";
 import {
   getWebhookConfigById,
   SAMPLE_WEBHOOK_PAYLOAD,
+  buildWebhookPublicUrl,
 } from "@/lib/webhookConfig";
+import { diagnosePublicBaseUrl } from "@/lib/publicUrl";
 import { processCustomWebhook } from "@/lib/webhooks/processCustomWebhook";
 
 interface RouteParams {
@@ -40,6 +42,9 @@ export async function POST(_request: Request, { params }: RouteParams) {
       JSON.stringify(testPayload)
     );
 
+    const publicUrl = buildWebhookPublicUrl(config.slug);
+    const publicUrlConfig = await diagnosePublicBaseUrl();
+
     await logAdminAction({
       adminUserId: admin.id,
       action: "webhook_config.tested",
@@ -57,6 +62,11 @@ export async function POST(_request: Request, { params }: RouteParams) {
       transactionId: result.transactionId,
       userEmail: result.userEmail,
       toolsReleased: result.toolSlug,
+      publicUrl,
+      publicUrlConfig,
+      note: publicUrlConfig.dnsResolvable
+        ? "Teste interno concluído. Plataformas externas devem enviar POST para o link público acima."
+        : "Teste interno concluído, mas o domínio público ainda não resolve no DNS. Corrija APP_URL/WEBHOOK_PUBLIC_BASE_URL e o DNS antes de testar na plataforma de pagamento.",
     });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Erro interno.";

@@ -15,12 +15,62 @@ Este documento descreve o fluxo recomendado para atualizar produção sem perder
 9. Testar ferramenta antiga (SsangYong)
 10. Testar ferramenta nova, se houver
 
+## VPS — domínio, DNS e webhooks
+
+Antes de colar o link do webhook na plataforma de pagamento:
+
+1. Aponte o DNS do domínio (registro **A** ou **CNAME**) para o IP da VPS
+2. Configure proxy reverso (Nginx/Caddy) com HTTPS na porta 443
+3. Defina no `.env` da VPS:
+
+```env
+APP_URL=https://decode.seudominio.com.br
+WEBHOOK_PUBLIC_BASE_URL=https://decode.seudominio.com.br
+```
+
+4. Reinicie a aplicação (`docker compose up -d --build app`)
+5. Teste:
+
+```bash
+curl https://decode.seudominio.com.br/api/health
+```
+
+Se o DNS ainda não propagou, plataformas externas retornam:
+
+`cURL error 6: Could not resolve host`
+
+O botão **Testar** no admin roda o processamento **internamente** no servidor.
+O teste da **plataforma de pagamento** só funciona quando o domínio público resolve e responde em HTTPS.
+
+### Exemplo Nginx
+
+```nginx
+server {
+    listen 80;
+    server_name decode.seudominio.com.br;
+    return 301 https://$host$request_uri;
+}
+
+server {
+    listen 443 ssl http2;
+    server_name decode.seudominio.com.br;
+
+    location / {
+        proxy_pass http://127.0.0.1:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+}
+```
+
 ## Comandos recomendados para produção
 
 ```bash
 npm ci
 npx prisma migrate deploy
-npm run seed:tools
+npm run seed:production
 npm run test:tools
 npm run build
 docker compose up -d --build app

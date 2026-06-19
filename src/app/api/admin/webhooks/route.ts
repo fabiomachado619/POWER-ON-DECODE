@@ -9,6 +9,7 @@ import {
   listWebhookConfigs,
   slugifyWebhook,
 } from "@/lib/webhookConfig";
+import { diagnosePublicBaseUrl } from "@/lib/publicUrl";
 
 const slugSchema = z
   .string()
@@ -28,8 +29,12 @@ const createSchema = z.object({
 export async function GET() {
   try {
     await requireAdminUser();
-    const configs = await listWebhookConfigs();
+    const [configs, publicUrlConfig] = await Promise.all([
+      listWebhookConfigs(),
+      diagnosePublicBaseUrl(),
+    ]);
     return NextResponse.json({
+      publicUrlConfig,
       webhooks: configs.map((config) => ({
         id: config.id,
         name: config.name,

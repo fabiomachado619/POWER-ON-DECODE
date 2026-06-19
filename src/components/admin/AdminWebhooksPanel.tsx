@@ -21,6 +21,13 @@ interface WebhookRow {
   eventsCount: number;
 }
 
+interface PublicUrlConfig {
+  baseUrl: string;
+  hostname: string | null;
+  dnsResolvable: boolean;
+  warning: string | null;
+}
+
 interface WebhookLogRow {
   id: string;
   createdAt: string;
@@ -49,6 +56,9 @@ function slugifyWebhook(value: string): string {
 
 export function AdminWebhooksPanel({ tools }: { tools: ToolOption[] }) {
   const [webhooks, setWebhooks] = useState<WebhookRow[]>([]);
+  const [publicUrlConfig, setPublicUrlConfig] = useState<PublicUrlConfig | null>(
+    null
+  );
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [expandedId, setExpandedId] = useState<string | null>(null);
@@ -72,6 +82,7 @@ export function AdminWebhooksPanel({ tools }: { tools: ToolOption[] }) {
     const response = await fetch("/api/admin/webhooks");
     const data = await response.json();
     if (data.webhooks) setWebhooks(data.webhooks);
+    if (data.publicUrlConfig) setPublicUrlConfig(data.publicUrlConfig);
   }
 
   useEffect(() => {
@@ -109,8 +120,8 @@ export function AdminWebhooksPanel({ tools }: { tools: ToolOption[] }) {
     return groups;
   }, [filteredTools]);
 
-  const previewPath = form.slug
-    ? `/api/webhooks/custom/${slugifyWebhook(form.slug)}`
+  const previewUrl = form.slug
+    ? `${publicUrlConfig?.baseUrl ?? ""}/api/webhooks/custom/${slugifyWebhook(form.slug)}`
     : "";
 
   function openCreate() {
@@ -195,7 +206,11 @@ export function AdminWebhooksPanel({ tools }: { tools: ToolOption[] }) {
     });
     const data = await response.json();
     setLoading(false);
-    setMessage(data.message ?? data.error ?? "Teste executado.");
+    setMessage(
+      data.note
+        ? `${data.message ?? "Teste interno concluído."} ${data.note}`
+        : data.message ?? data.error ?? "Teste executado."
+    );
     await loadWebhooks();
   }
 
@@ -229,6 +244,18 @@ export function AdminWebhooksPanel({ tools }: { tools: ToolOption[] }) {
           Novo webhook
         </button>
       </div>
+
+      {publicUrlConfig?.warning && (
+        <div className="rounded-xl border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-900">
+          <strong>Atenção — domínio público:</strong> {publicUrlConfig.warning}
+          <p className="mt-2 text-xs">
+            Base configurada: <code>{publicUrlConfig.baseUrl}</code>. Ajuste{" "}
+            <code>APP_URL</code> ou <code>WEBHOOK_PUBLIC_BASE_URL</code> no{" "}
+            <code>.env</code> da VPS e configure o DNS antes de testar na
+            plataforma de pagamento.
+          </p>
+        </div>
+      )}
 
       {message && (
         <div className="rounded-xl border border-brand/20 bg-brand-muted px-4 py-3 text-sm text-brand-dark">
@@ -361,13 +388,16 @@ export function AdminWebhooksPanel({ tools }: { tools: ToolOption[] }) {
                   Use apenas letras minúsculas, números e hífens.
                 </p>
               </div>
-              {previewPath && (
+              {previewUrl && (
                 <div className="rounded-xl border border-divider bg-canvas px-4 py-3">
                   <p className="text-xs text-ink-muted">Link do webhook</p>
-                  <p className="mt-1 break-all text-sm text-ink">{previewPath}</p>
-                  <p className="mt-1 text-xs text-ink-muted">
-                    Em produção, use seu domínio + este caminho.
-                  </p>
+                  <p className="mt-1 break-all text-sm text-ink">{previewUrl}</p>
+                  {!publicUrlConfig?.dnsResolvable && (
+                    <p className="mt-2 text-xs text-amber-700">
+                      Este domínio ainda não resolve no DNS. Plataformas externas
+                      retornarão erro cURL 6 até o DNS apontar para a VPS.
+                    </p>
+                  )}
                 </div>
               )}
               <textarea

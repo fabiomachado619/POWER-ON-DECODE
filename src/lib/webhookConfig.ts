@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import { getPublicBaseUrl } from "@/lib/publicUrl";
 
 export function slugifyWebhook(value: string): string {
   return value
@@ -15,7 +16,7 @@ export function buildWebhookUrlPath(slug: string): string {
 }
 
 export function getAppBaseUrl(): string {
-  return process.env.APP_URL ?? "http://localhost:3000";
+  return getPublicBaseUrl();
 }
 
 export function buildWebhookPublicUrl(slug: string): string {
