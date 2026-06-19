@@ -17,6 +17,9 @@ export interface ToolConfig {
   moduleSlug: string;
   decodeProcedureSlug?: string;
   acceptedExtensions?: string[];
+  referenceImageUrl?: string;
+  referenceImageAlt?: string;
+  referenceImageCaption?: string;
 }
 
 export interface ToolProcessContext {

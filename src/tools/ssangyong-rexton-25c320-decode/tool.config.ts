@@ -17,4 +17,9 @@ export const ssangyongRexton25c320DecodeConfig: ToolConfig = {
   moduleSlug: "ssangyong",
   decodeProcedureSlug: "reexton-5cyl-25c320",
   acceptedExtensions: [".bin"],
+  referenceImageUrl: "/images/tools/ssangyong-rexton-25c320-ecu-label.png",
+  referenceImageAlt:
+    "Etiqueta da ECU SsangYong Rexton 5 cilindros — EEPROM 25LC320",
+  referenceImageCaption:
+    "Confira a etiqueta da ECU antes de enviar o arquivo da EEPROM 25LC320.",
 };

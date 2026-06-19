@@ -215,6 +215,9 @@ export const es = {
       "Rexton 5 cilindros — EEPROM 25C320 / 25LC320. Procesamiento seguro en memoria, sin alteración del archivo original en el servidor.",
     temporarilyUnavailable:
       "Esta herramienta está temporalmente indisponible.",
+    clickToEnlarge: "Haga clic para ampliar",
+    closeImage: "Cerrar imagen",
+    enlargeReferenceImage: "Ampliar imagen de referencia de la ECU",
   },
   progress: {
     validating: "Validando archivo…",

@@ -10,6 +10,7 @@ import { FinalInstructions } from "./FinalInstructions";
 import { ProgressSteps } from "./ProgressSteps";
 import { ResponsibilityCheckbox } from "./ResponsibilityCheckbox";
 import { ToolInfoCard } from "./ToolInfoCard";
+import { ToolReferenceImage } from "./ToolReferenceImage";
 
 interface ToolRunnerPageProps {
   config: ToolRunnerViewModel;
@@ -146,6 +147,14 @@ export function ToolRunnerPage({ config }: ToolRunnerPageProps) {
 
   return (
     <div className="space-y-6">
+      {config.referenceImageUrl && (
+        <ToolReferenceImage
+          src={config.referenceImageUrl}
+          alt={config.referenceImageAlt ?? config.name}
+          caption={config.referenceImageCaption}
+        />
+      )}
+
       <ToolInfoCard title={t.tool.procedureData} items={infoItems} />
 
       <form onSubmit={handleSubmit} className="card space-y-5">

@@ -26,6 +26,9 @@ export function toToolRunnerViewModel(config: ToolConfig): ToolRunnerViewModel {
     acceptedExtensions: config.acceptedExtensions
       ? [...config.acceptedExtensions]
       : undefined,
+    referenceImageUrl: config.referenceImageUrl,
+    referenceImageAlt: config.referenceImageAlt,
+    referenceImageCaption: config.referenceImageCaption,
   };
 }
 

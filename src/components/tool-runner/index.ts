@@ -6,5 +6,6 @@ export { ResponsibilityCheckbox } from "./ResponsibilityCheckbox";
 export { ToolAccessGuard } from "./ToolAccessGuard";
 export { ToolHeader } from "./ToolHeader";
 export { ToolInfoCard } from "./ToolInfoCard";
+export { ToolReferenceImage } from "./ToolReferenceImage";
 export { ToolRunnerPage } from "./ToolRunnerPage";
 export type { ToolRunnerViewModel } from "@/tools/serializable";

@@ -211,6 +211,9 @@ export const ptBR = {
       "Rexton 5 cilindros — EEPROM 25C320 / 25LC320. Processamento seguro em memória, sem alteração do arquivo original no servidor.",
     temporarilyUnavailable:
       "Esta ferramenta está temporariamente indisponível.",
+    clickToEnlarge: "Clique para ampliar",
+    closeImage: "Fechar imagem",
+    enlargeReferenceImage: "Ampliar imagem de referência da ECU",
   },
   progress: {
     validating: "Validando arquivo…",
@@ -465,7 +468,10 @@ export type Dictionary = {
     | "processError"
     | "ssangyongTitle"
     | "ssangyongDesc"
-    | "temporarilyUnavailable",
+    | "temporarilyUnavailable"
+    | "clickToEnlarge"
+    | "closeImage"
+    | "enlargeReferenceImage",
     string
   >;
   home: Record<
