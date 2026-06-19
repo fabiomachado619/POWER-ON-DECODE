@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { getPwaSettings } from "@/lib/pwaSettings";
 
+export const dynamic = "force-dynamic";
+
 export async function GET() {
   const settings = await getPwaSettings();
 
