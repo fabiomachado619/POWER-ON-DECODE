@@ -2,6 +2,8 @@
 
 Plataforma SaaS para aplicação segura de procedimentos de decode em arquivos EEPROM/ECU automotivos, com login, controle de acesso por módulos comprados e arquitetura expansível para novos procedimentos.
 
+**Documentação arquitetural permanente:** [`docs/POWER_ON_DECODE_ARCHITECTURE.md`](docs/POWER_ON_DECODE_ARCHITECTURE.md) — leia antes de qualquer alteração estrutural.
+
 ## Stack
 
 - **Frontend/API:** Next.js 14 + TypeScript + TailwindCSS

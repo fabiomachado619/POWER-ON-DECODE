@@ -1,5 +1,7 @@
 # Deploy seguro — POWER ON DECODE TOOL
 
+> Memória técnica completa: [`docs/POWER_ON_DECODE_ARCHITECTURE.md`](docs/POWER_ON_DECODE_ARCHITECTURE.md)
+
 Este documento descreve o fluxo recomendado para atualizar produção sem perder dados nem quebrar ferramentas existentes.
 
 ## Fluxo correto de atualização
